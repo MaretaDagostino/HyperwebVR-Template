@@ -1,0 +1,2 @@
+# Normalize EOL to Linux for all files that Git considers text files.
+* text=auto eol=lf

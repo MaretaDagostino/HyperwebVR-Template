@@ -1,0 +1,127 @@
+[gd_scene format=3 uid="uid://b8qu42svaivr1"]
+
+[ext_resource type="Script" uid="uid://ctq8034oi4wau" path="res://internal/scripts/raycast.gd" id="1_r2c84"]
+[ext_resource type="Script" uid="uid://0obl2pnek78a" path="res://internal/scripts/vr_hand_collider.gd" id="2_ke4ib"]
+[ext_resource type="Script" uid="uid://gvf05fwc3p2p" path="res://internal/scripts/vr_locomotion.gd" id="2_uvuj7"]
+[ext_resource type="Script" uid="uid://ci025t0r4hqgh" path="res://internal/scripts/vr_ik_component.gd" id="4_3ifg7"]
+[ext_resource type="PackedScene" uid="uid://d2w7np4afrg4r" path="res://internal/scenes/players/t_pose.fbx" id="5_xi0i4"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ti1y2"]
+top_radius = 0.005
+bottom_radius = 0.005
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_avl12"]
+shading_mode = 0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_2p3jf"]
+radius = 0.05
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3ifg7"]
+transparency = 1
+albedo_color = Color(0.148614, 0.726923, 0.952147, 0.4)
+
+[sub_resource type="SphereMesh" id="SphereMesh_xi0i4"]
+radius = 0.05
+height = 0.1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cr7io"]
+top_radius = 0.005
+bottom_radius = 0.005
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nfdh3"]
+shading_mode = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gjx8d"]
+transparency = 1
+albedo_color = Color(0.734906, 0.0676843, 0.198859, 0.4)
+
+[sub_resource type="SphereMesh" id="SphereMesh_wi1mb"]
+radius = 0.05
+height = 0.1
+
+[node name="XROrigin3D" type="XROrigin3D" unique_id=1246934468]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="." unique_id=2125593247]
+
+[node name="LeftController" type="XRController3D" parent="." unique_id=237275552]
+tracker = &"left_hand"
+pose = &"grip"
+
+[node name="LeftControllerRayCast" type="RayCast3D" parent="LeftController" unique_id=448186099]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.059, -0.052)
+target_position = Vector3(0, -10, 0)
+script = ExtResource("1_r2c84")
+
+[node name="Pointer" type="MeshInstance3D" parent="LeftController/LeftControllerRayCast" unique_id=2097383735]
+visible = false
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_ti1y2")
+surface_material_override/0 = SubResource("StandardMaterial3D_avl12")
+
+[node name="VRHandCollider" type="Area3D" parent="LeftController" unique_id=497097844]
+collision_mask = 9
+script = ExtResource("2_ke4ib")
+debug_sphere_color = Color(0.148614, 0.726923, 0.952147, 0.4)
+hand_controller_path = NodePath("..")
+grip_action = "grip_click"
+grip_threshold = 0.5
+metadata/_custom_type_script = "uid://0obl2pnek78a"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LeftController/VRHandCollider" unique_id=1806583821]
+shape = SubResource("SphereShape3D_2p3jf")
+
+[node name="DebugMesh" type="MeshInstance3D" parent="LeftController/VRHandCollider" unique_id=1722485448]
+material_override = SubResource("StandardMaterial3D_3ifg7")
+mesh = SubResource("SphereMesh_xi0i4")
+
+[node name="RightController" type="XRController3D" parent="." unique_id=272708128]
+tracker = &"right_hand"
+pose = &"grip"
+
+[node name="RightControllerRayCast" type="RayCast3D" parent="RightController" unique_id=327532204]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.059, -0.052)
+target_position = Vector3(0, -10, 0)
+script = ExtResource("1_r2c84")
+
+[node name="Pointer" type="MeshInstance3D" parent="RightController/RightControllerRayCast" unique_id=718407458]
+visible = false
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_cr7io")
+surface_material_override/0 = SubResource("StandardMaterial3D_nfdh3")
+
+[node name="VRHandCollider" type="Area3D" parent="RightController" unique_id=1951530063]
+collision_mask = 9
+script = ExtResource("2_ke4ib")
+debug_sphere_color = Color(0.734906, 0.0676843, 0.198859, 0.4)
+hand_controller_path = NodePath("..")
+grip_action = "grip_click"
+grip_threshold = 0.5
+metadata/_custom_type_script = "uid://0obl2pnek78a"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RightController/VRHandCollider" unique_id=1943435202]
+shape = SubResource("SphereShape3D_2p3jf")
+
+[node name="DebugMesh" type="MeshInstance3D" parent="RightController/VRHandCollider" unique_id=1978372299]
+material_override = SubResource("StandardMaterial3D_gjx8d")
+mesh = SubResource("SphereMesh_wi1mb")
+
+[node name="VRLocomotion" type="Node" parent="." unique_id=1736187608]
+script = ExtResource("2_uvuj7")
+metadata/_custom_type_script = "uid://gvf05fwc3p2p"
+
+[node name="VRIKComponent" type="Node" parent="." unique_id=1502445416]
+script = ExtResource("4_3ifg7")
+skeletal_mesh_scene = ExtResource("5_xi0i4")
+body_forward_offset = 0.15
+hmd_rotation_deadzone = 35.0
+foot_height_offset = 0.1
+hand_rotation_x = -91.59
+hand_rotation_y = 73.175
+hand_rotation_z = -51.255
+hand_position_offset = Vector3(-0.045, 0.055, 0.045)
+right_hand_rotation_x = -131.88
+right_hand_rotation_y = -92.495
+right_hand_rotation_z = -6.425
+debug_on_button_press = false
+show_controller_axes = true
+metadata/_custom_type_script = "uid://ci025t0r4hqgh"

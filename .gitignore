@@ -1,0 +1,7 @@
+# Godot 4+ specific ignores
+.godot/
+
+# No need to debug OpenXR Vendors plugin here
+addons/godotopenxrvendors/.bin/*/debug/
+addons/godotopenxrvendors/.bin/*/template_debug/
+
